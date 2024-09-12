@@ -22,7 +22,7 @@
     } else {
       const token = prompt(
         'To enter Draft Mode, you need to insert the PRIVATE_SECRET_API_TOKEN:',
-        'secretTokenProtectingWebhookEndpointsFromBeingCalledByAnyone',
+        'b71903de80e695b8ea503e3611a9960edf4416673a4aaf0e162583a62c9c1406',
       );
       if (!token) {
         return;
