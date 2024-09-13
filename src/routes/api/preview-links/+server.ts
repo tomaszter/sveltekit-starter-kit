@@ -27,11 +27,12 @@ type WebPreviewsResponse = {
 
 export const POST: RequestHandler = async ({ url, request }) => {
   try {
+    console.log('url', url);
     // Parse query string parameters
     const token = url.searchParams.get('token');
 
     console.log('token', token);
-    console.log('token', privateEnv);
+    console.log('privateEnv', privateEnv.PRIVATE_SECRET_API_TOKEN);
 
     // Ensure that the request is coming from a trusted source
     if (token !== privateEnv.PRIVATE_SECRET_API_TOKEN) {
