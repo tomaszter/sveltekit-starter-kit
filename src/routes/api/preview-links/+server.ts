@@ -30,6 +30,7 @@ export const POST: RequestHandler = async ({ url, request }) => {
     // Extract the token from custom header 'x-auth-token'
     const token = request.headers.get('x-auth-token');
 
+    console.log('request:', request);
     console.log('Extracted Token from Header:', token);
 
     // Validate the token
