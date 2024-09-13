@@ -40,7 +40,6 @@ export const POST: RequestHandler = async ({ url, request }) => {
      * along with information about which locale they are currently viewing in
      * the interface
      */
-
     const { item, itemType, locale } = await request.json();
 
     // We can use this info to generate the frontend URL associated
@@ -90,8 +89,6 @@ export const POST: RequestHandler = async ({ url, request }) => {
         });
       }
     }
-
-    console.log('CORS', withCORS());
 
     // Respond in the format expected by the plugin
     return json(response, withCORS());

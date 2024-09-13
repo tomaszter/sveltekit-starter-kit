@@ -3,6 +3,7 @@ import { json } from '@sveltejs/kit';
 import { serializeError } from 'serialize-error';
 
 export function withCORS(responseInit?: ResponseInit): ResponseInit {
+  console.log('withCORS', responseInit);
   return {
     ...responseInit,
     headers: {
