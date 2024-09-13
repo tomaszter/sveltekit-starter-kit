@@ -27,66 +27,52 @@ type WebPreviewsResponse = {
 
 export const POST: RequestHandler = async ({ url, request }) => {
   try {
-    console.log('url', url);
+    // Log the incoming URL and request headers for debugging
+    console.log('Incoming URL:', url.href);
+    console.log('Request Headers:', request.headers);
+
     // Parse query string parameters
     const token = url.searchParams.get('token');
+    console.log('Extracted Token:', token);
 
-    console.log('token', token);
-    console.log('privateEnv', privateEnv.PRIVATE_SECRET_API_TOKEN);
+    // Verify environment token for security
+    console.log('Expected Token:', privateEnv.PRIVATE_SECRET_API_TOKEN);
 
-    // Ensure that the request is coming from a trusted source
+    // Ensure that the token is provided and matches the expected value
+    if (!token) {
+      return invalidRequestResponse('Token is missing', 401);
+    }
     if (token !== privateEnv.PRIVATE_SECRET_API_TOKEN) {
       return invalidRequestResponse('Invalid token', 401);
     }
 
-    /**
-     * The plugin sends the record and model for which the user wants a preview,
-     * along with information about which locale they are currently viewing in
-     * the interface
-     */
+    // Parse request body
     const { item, itemType, locale } = await request.json();
 
-    // We can use this info to generate the frontend URL associated
+    // Generate frontend URL for the item based on the provided information
     const recordUrl = await recordToWebsiteRoute(item, itemType.attributes.api_key, locale);
 
+    // Initialize response object
     const response: WebPreviewsResponse = { previewLinks: [] };
 
+    // If a valid record URL is generated
     if (recordUrl) {
-      /**
-       * If status is not published, it means that it has a current version that's
-       * different from the published one, so it has a draft version!
-       */
+      // Handle draft version
       if (item.meta.status !== 'published') {
-        /**
-         * Generate a URL that initially enters Draft Mode, and then
-         * redirects to the desired URL
-         */
         response.previewLinks.push({
           label: 'Draft version',
           url: new URL(
-            /*
-             * We generate the URL in a way that it first passes through the
-             * endpoint that enables the Draft Mode.
-             */
             `/api/draft-mode/enable?url=${recordUrl}&token=${token}`,
             request.url,
           ).toString(),
         });
       }
 
-      /** If status is not draft, it means that it has a published version! */
+      // Handle published version
       if (item.meta.status !== 'draft') {
-        /**
-         * Generate a URL that first exits from Draft Mode, and then
-         * redirects to the desired URL.
-         */
         response.previewLinks.push({
           label: 'Published version',
           url: new URL(
-            /*
-             * We generate the URL in a way that it first passes through the
-             * endpoint that disables the Draft Mode.
-             */
             `/api/draft-mode/disable?url=${recordUrl}`,
             request.url,
           ).toString(),
@@ -94,9 +80,11 @@ export const POST: RequestHandler = async ({ url, request }) => {
       }
     }
 
-    // Respond in the format expected by the plugin
+    // Respond in the expected format with CORS headers
     return json(response, withCORS());
+
   } catch (error) {
+    console.error('Error handling request:', error);
     return handleUnexpectedError(error);
   }
 };
