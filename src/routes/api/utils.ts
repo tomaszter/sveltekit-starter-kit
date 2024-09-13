@@ -10,7 +10,6 @@ export function withCORS(responseInit?: ResponseInit): ResponseInit {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Content-Security-Policy': "frame-ancestors 'self' https://plugins-cdn.datocms.com",
     },
   };
 }

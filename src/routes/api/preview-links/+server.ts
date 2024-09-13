@@ -27,48 +27,28 @@ type WebPreviewsResponse = {
 
 export const POST: RequestHandler = async ({ url, request }) => {
   try {
-    // Log the incoming URL and request headers for debugging
-    console.log('Incoming URL:', url.href);
-    console.log('Request Headers:', request.headers);
+    // Extract the token from custom header 'x-auth-token'
+    const token = request.headers.get('x-auth-token');
 
-    // Parse query string parameters
-    const token = url.searchParams.get('token');
-    console.log('Extracted Token:', token);
+    console.log('Extracted Token from Header:', token);
 
-    // Verify environment token for security
-    console.log('Expected Token:', privateEnv.PRIVATE_SECRET_API_TOKEN);
+    // Validate the token
+    if (token !== privateEnv.PRIVATE_SECRET_API_TOKEN) {
+      return invalidRequestResponse('Invalid token', 401);
+    }
 
-    // Ensure that the token is provided and matches the expected value
-    // if (!token) {
-    //   return invalidRequestResponse('Token is missing', 401);
-    // }
-    // if (token !== privateEnv.PRIVATE_SECRET_API_TOKEN) {
-    //   return invalidRequestResponse('Invalid token', 401);
-    // }
-
-    // Parse request body
+    // Continue with your existing logic
     const { item, itemType, locale } = await request.json();
-
-    // Generate frontend URL for the item based on the provided information
     const recordUrl = await recordToWebsiteRoute(item, itemType.attributes.api_key, locale);
-
-    // Initialize response object
     const response: WebPreviewsResponse = { previewLinks: [] };
 
-    // If a valid record URL is generated
     if (recordUrl) {
-      // Handle draft version
       if (item.meta.status !== 'published') {
         response.previewLinks.push({
           label: 'Draft version',
-          url: new URL(
-            `/api/draft-mode/enable?url=${recordUrl}&token=${token}`,
-            request.url,
-          ).toString(),
+          url: new URL(`/api/draft-mode/enable?url=${recordUrl}`, request.url).toString(),
         });
       }
-
-      // Handle published version
       if (item.meta.status !== 'draft') {
         response.previewLinks.push({
           label: 'Published version',
@@ -77,10 +57,8 @@ export const POST: RequestHandler = async ({ url, request }) => {
       }
     }
 
-    // Respond in the expected format with CORS headers
     return json(response, withCORS());
   } catch (error) {
-    console.error('Error handling request:', error);
     return handleUnexpectedError(error);
   }
 };
