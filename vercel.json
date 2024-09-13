@@ -1,9 +1,13 @@
 {
-  "routes": [
+  "headers": [
     {
-      "src": "/api/preview-links",
-      "methods": ["POST"],
-      "dest": "/api/preview-links"
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self' https://plugins-cdn.datocms.com;"
+        }
+      ]
     }
   ]
 }
