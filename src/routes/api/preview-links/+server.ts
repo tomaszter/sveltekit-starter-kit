@@ -39,12 +39,12 @@ export const POST: RequestHandler = async ({ url, request }) => {
     console.log('Expected Token:', privateEnv.PRIVATE_SECRET_API_TOKEN);
 
     // Ensure that the token is provided and matches the expected value
-    if (!token) {
-      return invalidRequestResponse('Token is missing', 401);
-    }
-    if (token !== privateEnv.PRIVATE_SECRET_API_TOKEN) {
-      return invalidRequestResponse('Invalid token', 401);
-    }
+    // if (!token) {
+    //   return invalidRequestResponse('Token is missing', 401);
+    // }
+    // if (token !== privateEnv.PRIVATE_SECRET_API_TOKEN) {
+    //   return invalidRequestResponse('Invalid token', 401);
+    // }
 
     // Parse request body
     const { item, itemType, locale } = await request.json();
@@ -72,17 +72,13 @@ export const POST: RequestHandler = async ({ url, request }) => {
       if (item.meta.status !== 'draft') {
         response.previewLinks.push({
           label: 'Published version',
-          url: new URL(
-            `/api/draft-mode/disable?url=${recordUrl}`,
-            request.url,
-          ).toString(),
+          url: new URL(`/api/draft-mode/disable?url=${recordUrl}`, request.url).toString(),
         });
       }
     }
 
     // Respond in the expected format with CORS headers
     return json(response, withCORS());
-
   } catch (error) {
     console.error('Error handling request:', error);
     return handleUnexpectedError(error);
