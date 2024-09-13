@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "src": "/api/preview-links",
+      "methods": ["POST"],
+      "dest": "/api/preview-links"
+    }
+  ]
+}
