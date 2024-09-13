@@ -30,6 +30,9 @@ export const POST: RequestHandler = async ({ url, request }) => {
     // Parse query string parameters
     const token = url.searchParams.get('token');
 
+    console.log('token', token);
+    console.log('token', privateEnv.PRIVATE_SECRET_API_TOKEN);
+
     // Ensure that the request is coming from a trusted source
     if (token !== privateEnv.PRIVATE_SECRET_API_TOKEN) {
       return invalidRequestResponse('Invalid token', 401);
