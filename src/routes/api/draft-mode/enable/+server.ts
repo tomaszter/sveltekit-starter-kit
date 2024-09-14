@@ -16,9 +16,9 @@ export const GET: RequestHandler = (event) => {
 
   try {
     // Ensure that the request is coming from a trusted source
-    // if (token !== env.PRIVATE_SECRET_API_TOKEN) {
-    //   return invalidRequestResponse('Invalid token', 401);
-    // }
+    if (token !== env.PRIVATE_SECRET_API_TOKEN) {
+      return invalidRequestResponse('Invalid token', 401);
+    }
 
     // Avoid open redirect vulnerabilities
     if (redirectUrl.startsWith('http://') || redirectUrl.startsWith('https://')) {
