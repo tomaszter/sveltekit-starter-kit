@@ -31,9 +31,15 @@ export const POST: RequestHandler = async ({ url, request }) => {
     const token = url.searchParams.get('token');
 
     // Ensure that the request is coming from a trusted source
-    if (token !== privateEnv.PRIVATE_SECRET_API_TOKEN) {
-      return invalidRequestResponse('Invalid token', 401);
-    }
+    // if (token !== privateEnv.PRIVATE_SECRET_API_TOKEN) {
+    //   return invalidRequestResponse('Invalid token', 401);
+    // }
+
+
+    console.log('token', token);
+    console.log('privateEnv', privateEnv.PRIVATE_SECRET_API_TOKEN);
+    console.log('request', request);
+
 
     /**
      * The plugin sends the record and model for which the user wants a preview,

@@ -22,8 +22,6 @@ async function installWebPreviewsPlugin(client: Client, baseUrl: string) {
     package_name: 'datocms-plugin-web-previews',
   });
 
-  console.log('previewWebhook', `/api/preview-links?token=${privateEnv.PRIVATE_SECRET_API_TOKEN}`);
-
   await client.plugins.update(webPreviewsPlugin, {
     parameters: {
       frontends: [
@@ -67,8 +65,6 @@ export const POST: RequestHandler = async ({ request }) => {
 
   const client = buildClient({ apiToken: body.datocmsApiToken });
   const baseUrl = body.frontendUrl as string;
-
-  console.log('baseUrl', baseUrl);
 
   try {
     await Promise.all([
