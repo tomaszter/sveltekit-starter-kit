@@ -1,7 +1,7 @@
 {
   "headers": [
     {
-      "source": "/(.*)",  // Apply to all routes
+      "source": "/(.*)", // Apply to all routes
       "headers": [
         {
           "key": "Content-Security-Policy",
