@@ -15,7 +15,8 @@ export const GET: RequestHandler = (event) => {
   const redirectUrl = url.searchParams.get('url') || '/';
 
   // Check for iframe request (either by query parameter or referer)
-  const isIframeRequest = url.searchParams.has('iframe') || request.headers.get('referer')?.includes('datocms.com');
+  const isIframeRequest =
+    url.searchParams.has('iframe') || request.headers.get('referer')?.includes('datocms.com');
 
   try {
     // Ensure that the request is coming from a trusted source

@@ -13,7 +13,8 @@ export const GET: RequestHandler = (event) => {
   const redirectUrl = url.searchParams.get('url') || '/';
 
   // Check for iframe request (either by query parameter or referer)
-  const isIframeRequest = url.searchParams.has('iframe') || request.headers.get('referer')?.includes('datocms.com');
+  const isIframeRequest =
+    url.searchParams.has('iframe') || request.headers.get('referer')?.includes('datocms.com');
 
   try {
     // Avoid open redirect vulnerabilities
@@ -35,4 +36,3 @@ export const GET: RequestHandler = (event) => {
   // For regular requests, redirect to the provided URL
   return redirect(307, redirectUrl);
 };
-
