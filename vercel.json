@@ -6,26 +6,6 @@
         {
           "key": "Content-Security-Policy",
           "value": "frame-ancestors 'self' https://plugins-cdn.datocms.com;"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://plugins-cdn.datocms.com"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Authorization, Content-Type"
-        },
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "no-referrer-when-downgrade"
         }
       ]
     }
